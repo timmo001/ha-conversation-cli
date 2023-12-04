@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"log"
 	"net/url"
@@ -12,7 +13,7 @@ import (
 
 const (
 	AppVersion = "0.1.0"
-	ConfigFile = "config.json"
+	configFile = "config.json"
 )
 
 var (
@@ -151,14 +152,21 @@ func main() {
 	// Get pipelines
 	homeAssistantPipelines = homeAssistantGetPipelines()
 
-	// // Create message
+	requestInputText := flag.String("text", "", "Text to send to Home Assistant")
+	flag.Parse()
+
+	if *requestInputText == "" {
+		log.Fatal("No text provided")
+	}
+
+	// Create message
 	message := HomeAssistantPipelineRequest{
 		ID:             2,
 		Type:           "assist_pipeline/run",
 		ConversationID: nil,
 		StartStage:     "intent",
 		Input: HomeAssistantPipelineRequestInput{
-			Text: "What is the weather like?",
+			Text: *requestInputText,
 		},
 		EndStage: "intent",
 		Pipeline: homeAssistantPipelines.Result.PreferredPipeline,
