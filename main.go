@@ -141,6 +141,14 @@ func homeAssistantGetPipelines() HomeAssistantResponse[HomeAssistantPipelinesRes
 }
 
 func main() {
+	// Create file logger
+	logFile, err := os.OpenFile("ha-conversation-cli.log", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Fatal("Error opening log file:", err)
+	}
+	defer logFile.Close()
+	log.SetOutput(logFile)
+
 	log.Print("HA Conversation CLI: ", AppVersion)
 
 	// Load config
