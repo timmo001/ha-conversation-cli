@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	AppVersion = "0.1.0"
+	AppVersion = "1.0.0"
 	configFile = "config.json"
 )
 
